@@ -12,6 +12,30 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+io.on('connection', function(socket) {
+  // klient nasłuchuje na wiadomość wejścia do czatu
+	socket.on('join', function(name){
+	  // użytkownika, który pojawił się w aplikacji zapisujemy do serwisu trzymającego listę osób w czacie
+	  userService.addUser({
+	    id: socket.id,
+	    name
+	  });
+	  // aplikacja emituje zdarzenie update, które aktualizuje informację na temat listy użytkowników każdemu nasłuchującemu na wydarzenie 'update'
+	  io.emit('update', {
+	    users: userService.getAllUsers()
+	  });
+	});
+});
+
+io.on('connection', function(socket) {
+  socket.on('disconnect', () => {
+    userService.removeUser(socket.id);
+    socket.broadcast.emit('update', {
+      users: userService.getAllUsers()
+    });
+  });
+});
+
 server.listen(3000, function(){
   console.log('listening on *:3000');
 });
