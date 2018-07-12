@@ -5,6 +5,9 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+const UsersService = require('./UsersService');
+
+const userService = new UsersService();
 
 app.use(express.static(__dirname + '/public'));
 
@@ -32,6 +35,16 @@ io.on('connection', function(socket) {
     userService.removeUser(socket.id);
     socket.broadcast.emit('update', {
       users: userService.getAllUsers()
+    });
+  });
+});
+
+io.on('connection', function(socket) {
+  socket.on('message', function(message){
+    const {name} = userService.getUserById(socket.id);
+    socket.broadcast.emit('message', {
+      text: message.text,
+      from: name
     });
   });
 });
