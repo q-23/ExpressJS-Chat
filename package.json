@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "NODE_ENV=production webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,5 +15,3 @@
   }
 }
 
-
-babel-core babel-loader babel-preset-es2015 babel-preset-react babel-preset-stage-2 css-loader style-loader html-webpack-plugin optimize-js-plugin react-hot-loader webpack@3.10.0 webpack-dev-server@2.11 react react-dom socket.io-client

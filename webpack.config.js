@@ -1,4 +1,10 @@
 const path = require('path');
+var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var OptimizeJsPlugin = require('optimize-js-plugin');
+
+var env = process.env.NODE_ENV || 'development';
 
 module.exports = {
     entry: (env !== 'production' ? [
